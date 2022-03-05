@@ -1,6 +1,6 @@
 package Biblioteca;
-import java.lang.annotation.Target;
-import java.lang.reflect.Array;
+
+import java.io.*;
 import java.util.*;
 
 public class main {
@@ -10,16 +10,11 @@ public class main {
      * @param args
      * @throws CloneNotSupportedException
      */
-    public static void main(String[] args) throws CloneNotSupportedException {
+    public static void main(String[] args) throws CloneNotSupportedException, IOException {
 
         // Main class for all the biblio-related stuff
 
         // Primero creamos libros
-
-        // Creamos un libro A
-
-        ArrayList<Libros> libros = new ArrayList<Libros>();
-
         Libros Libro1 = new Libros("El camino de los reyes", "Brandon Sanderson", 1212, 3, 30);
         Libros Libro2 = new Libros("Indigno de ser humano", "Osamu Dazai", 5626, 1, 19);
         Libros Libro3 = new Libros("Dime quien soy", "Julia Navarro", 8233, 5, 20);
@@ -28,8 +23,9 @@ public class main {
         Libros Libro6 = new Libros("Tan poca vida", "Hanya Yanagihara", 1256, 20, 17);
         Libros Libro7 = new Libros("1984", "George Orwell", 9983, 4, 15);
 
-        // Añadimos los libros al arraylist
+        // TODO: LINKEDLIST (Añadir libros a linkedlist)
 
+        List<Libros> libros = new LinkedList<Libros>();
         libros.add(Libro1);
         libros.add(Libro2);
         libros.add(Libro3);
@@ -38,13 +34,13 @@ public class main {
         libros.add(Libro6);
         libros.add(Libro7);
 
-        // Creamos una de vinilos
 
         // Creamos los vinilos
+        // TODO: ARRAYLIST
         ArrayList<Vinilos> vinilos = new ArrayList<Vinilos>();
 
         Vinilos vinilos1 = new Vinilos("Fine line", 12, 01, "03/05/2018", 9);
-        Vinilos vinilos2 = new Vinilos("evermore", 10, 02, "20/05/2012", 1);
+        Vinilos vinilos2 = new Vinilos("Evermore", 10, 02, "20/05/2012", 1);
         Vinilos vinilos3 = new Vinilos("Nevermind", 12, 03, "08/03/1991", 9);
         Vinilos vinilos4 = new Vinilos("The doors", 11, 04, "19/10/2010", 10);
         Vinilos vinilos5 = new Vinilos("Morrison Hotel", 11, 05, "21/09/2015", 4);
@@ -55,31 +51,35 @@ public class main {
         vinilos.add(vinilos4);
         vinilos.add(vinilos5);
 
+
         // Crear usuario administrador en un array estatico
         Administrador admin1[] = new Administrador[1];
-        admin1[0] = new Administrador("admin", "admin");
-
+        admin1[0] = new Administrador("Biblioteca/admin", "Biblioteca/admin");
 
 
         // Crear cliente Privado
-        ArrayList<ClientePrivado> clientesPrivados = new ArrayList<ClientePrivado>();
+        // TODO: HASHMAP
+        Map<String, ClientePrivado> clientesPrivados = new HashMap<>();
         ClientePrivado clientePrivado1 = new ClientePrivado("Juan", "Perez", "2131231", "juan1989@gmail.com", "1989");
         ClientePrivado clientePrivado2 = new ClientePrivado("Felipe", "Armadillo", "257239", "ArmadilloGOD@gmail.com", "1182");
         ClientePrivado clientePrivado3 = new ClientePrivado("Amanda", "Flores", "654932", "floresitamanda@gmail.com", "1009");
 
-        clientesPrivados.add(clientePrivado1);
-        clientesPrivados.add(clientePrivado2);
-        clientesPrivados.add(clientePrivado3);
+        clientesPrivados.put(clientePrivado1.getDni(), clientePrivado1);
+        clientesPrivados.put(clientePrivado2.getDni(), clientePrivado2);
+        clientesPrivados.put(clientePrivado3.getDni(), clientePrivado3);
+
 
         // Crear cliente escuela privada
-        ArrayList<ClienteEscolaMusica> clienteEscuelaM = new ArrayList<ClienteEscolaMusica>();
+        // TODO: TREEMAP
+        Map<String, ClienteEscolaMusica> clienteEscuelaM = new TreeMap();
         ClienteEscolaMusica clienteEscola1 = new ClienteEscolaMusica("Tania", "Torres", "231312", "taniaat@gmail.com", "Clot");
         ClienteEscolaMusica clienteEscola2 = new ClienteEscolaMusica("Manolo", "Lopez", "987123", "manolin@gmail.com", "Clot");
         ClienteEscolaMusica clienteEscola3 = new ClienteEscolaMusica("Mariola", "Serrano", "561209", "mariiola1@gmail.com", "Clot");
 
-        clienteEscuelaM.add(clienteEscola1);
-        clienteEscuelaM.add(clienteEscola2);
-        clienteEscuelaM.add(clienteEscola3);
+        clienteEscuelaM.put(clienteEscola1.getDni(), clienteEscola1);
+        clienteEscuelaM.put(clienteEscola2.getDni(), clienteEscola2);
+        clienteEscuelaM.put(clienteEscola3.getDni(), clienteEscola3);
+
 
         // Crear trabajadores
         ArrayList<Trabajador> trabajadores = new ArrayList<>();
@@ -90,6 +90,7 @@ public class main {
         trabajadores.add(trabajadores1);
         trabajadores.add(trabajadores2);
         trabajadores.add(trabajadores3);
+
 
         // Crear prestamos
 
@@ -111,8 +112,13 @@ public class main {
             System.out.println("3. Administrador");
             System.out.println("4. Salir");
 
-            opcion = sc.nextInt();
-
+            opcion = 0;
+            // TODO: EXCEPCIÓN PROPIA
+            try {
+                opcion = sc.nextInt();
+            } catch (InputMismatchException e) {
+                throw new Excepcion(e.getMessage());
+            }
             switch (opcion) {
                 case 1:
                     System.out.println("Introduce tu nombre de usuario: ");
@@ -122,11 +128,15 @@ public class main {
 
                     // Comprobar que el usuario y contraseña son correctos
                     boolean correcto = false;
-                    for (Trabajador trabajador : trabajadores) {
-                        // todo compareTo
-                        if (trabajador.getUsuario().compareTo(usuarioP) == 0 && trabajador.getPassword().compareTo(contrasenaP) == 0) {
+
+                    // Leer el archivo encarregat
+                    FileReader frE2 = new FileReader("src/Biblioteca/encarregat");
+                    BufferedReader brE2 = new BufferedReader(frE2);
+                    String lineaE2;
+                    while ((lineaE2 = brE2.readLine()) != null) {
+                        String[] datosE2 = lineaE2.split(",");
+                        if (datosE2[0].equals(usuarioP) && datosE2[1].equals(contrasenaP)) {
                             correcto = true;
-                            break;
                         }
                     }
 
@@ -187,8 +197,9 @@ public class main {
                                                     // Leer valor de la variable de retorno del metodo Prestar
 
                                                     // Guardar el libro prestado en el metodo guardarLibro de ClientePrivado
-                                                    for (ClientePrivado clientePrivado : clientesPrivados) {
-                                                        if (clientePrivado.getNombre().equals(nombre)) {
+                                                    for (Map.Entry<String, ClientePrivado> entry : clientesPrivados.entrySet()) {
+                                                        if (entry.getKey().equals(nombre)) {
+                                                            ClientePrivado clientePrivado = entry.getValue();
                                                             clientePrivado.guardarLibro(libro);
                                                             System.out.println("Pulsa cualquier tecla para continuar");
                                                             sc.nextLine();
@@ -202,8 +213,9 @@ public class main {
                                                     sc.nextLine();
                                                     System.out.println("Nombre: ");
                                                     String nombre22 = sc.nextLine();
-                                                    for (ClientePrivado clientePrivado : clientesPrivados) {
-                                                        if (clientePrivado.getNombre().equals(nombre22)) {
+                                                    for (Map.Entry<String, ClientePrivado> entry : clientesPrivados.entrySet()) {
+                                                        if (entry.getKey().equals(nombre22)) {
+                                                            ClientePrivado clientePrivado = entry.getValue();
                                                             clientePrivado.devolverLibro(isbn22);
                                                             Libros.devolverLibros(libros, isbn22);
                                                             numeroEscape = 1;
@@ -235,14 +247,14 @@ public class main {
                                     } else if (libro.getCantidad() == 0) {
                                         System.out.println("No hay libros disponibles");
                                         // Decir quien tiene los libros prestados, mirar en el arraylist clientesPrivados
-                                        for (ClientePrivado clientesPrivado : clientesPrivados) {
-                                            if (clientesPrivado.comprobarLibro(isbn)) {
-                                                System.out.println("Los libros se encuentran prestados por " + clientesPrivado.getNombre());
+                                        for (Map.Entry<String, ClientePrivado> entry : clientesPrivados.entrySet()) {
+                                            if (entry.getValue().comprobarLibro(libro.getIsbn())) {
+                                                System.out.println("Los libros se encuentran prestados por " + entry.getKey());
 
                                                 System.out.println("\nQuieres devolver el libro? (1. Si, 2. No)");
                                                 int opcion23 = sc.nextInt();
                                                 if (opcion23 == 1) {
-                                                    clientesPrivado.devolverLibro(isbn);
+                                                    entry.getValue().devolverLibro(libro.getIsbn());
                                                     Libros.devolverLibros(libros, isbn);
                                                 }
                                             }
@@ -284,9 +296,16 @@ public class main {
                     String nombreUsuario = sc.nextLine();
                     System.out.println("Introduce tu contraseña");
                     String contrasena = sc.nextLine();
+
                     boolean encontradoE = false;
-                    for (Trabajador trabajador : trabajadores) {
-                        if (trabajador.getUsuario().equals(nombreUsuario) && trabajador.getPassword().equals(contrasena)) {
+
+                    // leer el fichero de encarregat
+                    FileReader frE = new FileReader("src/Biblioteca/encarregat");
+                    BufferedReader brE = new BufferedReader(frE);
+                    String lineaE;
+                    while ((lineaE = brE.readLine()) != null) {
+                        String[] datosE = lineaE.split(",");
+                        if (datosE[0].equals(nombreUsuario) && datosE[1].equals(contrasena)) {
                             encontradoE = true;
                         }
                     }
@@ -341,9 +360,9 @@ public class main {
                                                     sc.nextLine();
 
                                                     //Guardar el libro prestado en el metodo guardarLibro de ClientePrivado
-                                                    for (ClienteEscolaMusica clienteEscola : clienteEscuelaM) {
-                                                        if (clienteEscola.getNombre().equals(nombre)) {
-                                                            clienteEscola.guardarVinilo(vinilo);
+                                                    for (Map.Entry<String, ClienteEscolaMusica> entry : clienteEscuelaM.entrySet()) {
+                                                        if (entry.getValue().getNombre().equals(nombre)) {
+                                                            entry.getValue().guardarVinilo(vinilo);
                                                             System.out.println("Pulsa cualquier tecla para continuar");
                                                             sc.nextLine();
                                                             numeroEscape = 1;
@@ -356,9 +375,9 @@ public class main {
                                                     sc.nextLine();
                                                     System.out.println("Nombre: ");
                                                     String nombre22 = sc.nextLine();
-                                                    for (ClienteEscolaMusica clienteEscolaM : clienteEscuelaM) {
-                                                        if (clienteEscolaM.getNombre().equals(nombre22)) {
-                                                            clienteEscolaM.devolverLibro(isbn22);
+                                                    for (Map.Entry<String, ClienteEscolaMusica> entry : clienteEscuelaM.entrySet()) {
+                                                        if (entry.getValue().getNombre().equals(nombre22)) {
+                                                            entry.getValue().devolverLibro(isbn22);
                                                             Vinilos.devolverVinilos(vinilos, isbn22);
                                                             numeroEscape = 1;
                                                         }
@@ -385,14 +404,14 @@ public class main {
                                     } else if (vinilo.getCantidad() == 0) {
                                         System.out.println("No hay vinilos disponibles");
                                         //Decir quien tiene los vinilos prestados, mirar en el arraylist ClientesMusica
-                                        for (ClienteEscolaMusica clienteEscolaMus : clienteEscuelaM) {
-                                            if (clienteEscolaMus.comprobarVinilos(id)) {
-                                                System.out.println("Los libros se encuentran prestados por" + clienteEscolaMus.getNombre());
+                                        for (Map.Entry<String, ClienteEscolaMusica> entry : clienteEscuelaM.entrySet()) {
+                                            if (entry.getValue().comprobarVinilos(vinilo.getId())) {
+                                                System.out.println("Los libros se encuentran prestados por" + entry.getValue().getNombre());
 
                                                 System.out.println("\n Quieres devolver el libro (1.Si, 2.No)");
                                                 int opcion24 = sc.nextInt();
                                                 if (opcion24 == 1) {
-                                                    clienteEscolaMus.devolverLibro(id);
+                                                    entry.getValue().devolverLibro(vinilo.getId());
                                                     Vinilos.devolverVinilos(vinilos, id);
                                                 }
                                             }
@@ -430,14 +449,25 @@ public class main {
                         String usuario = sc.nextLine();
                         System.out.println("Introduce tu contraseña: ");
                         String contrasena1 = sc.nextLine();
-
-                        // Comprobar que el usuario y contraseña son correctos
                         boolean encontrado = false;
+                        // Comprobar que el usuario y contraseña son correctos usando el archivo de admin
+                        // Leer el archivo de admin
+                        FileReader fr = new FileReader("src/Biblioteca/admin");
+                        BufferedReader br = new BufferedReader(fr);
+                        String linea;
+                        while ((linea = br.readLine()) != null) {
+                            String[] datos = linea.split(",");
+                            if (datos[0].equals(usuario) && datos[1].equals(contrasena1)) {
+                                encontrado = true;
+                                break;
+                            }
+                        }
+                        /*
                         for (int i = 0; i < admin1.length; i++) {
                             if (admin1[i].getUsuario().equals(usuario) && admin1[i].getContra().equals(contrasena1)) {
                                 encontrado = true;
                             }
-                        }
+                        }*/
 
                         // Si falla la contraseña o el usuario se repite hasta 3 veces
                         if (encontrado == false) {
@@ -651,14 +681,14 @@ public class main {
                                                                 System.out.println("Introduce el codigo postal del cliente: ");
                                                                 String codigoPostal5 = sc.nextLine();
 
-                                                                ClientePrivado clientePrivado = new ClientePrivado(nombre5, apellidos5, dni5, email5, codigoPostal5);
-                                                                clientesPrivados.add(clientePrivado);
+                                                                ClientePrivado clientePrivado444 = new ClientePrivado(nombre5, apellidos5, dni5, email5, codigoPostal5);
+                                                                clientesPrivados.put(clientePrivado444.getDni(), clientePrivado444);
                                                                 break;
                                                             case 2:
                                                                 System.out.println("Introduce el DNI del cliente que quieres modificar: ");
                                                                 String dni6 = sc.nextLine();
-                                                                for (ClientePrivado clientePrivado4 : clientesPrivados) {
-                                                                    if (clientePrivado4.getDni().equals(dni6)) {
+                                                                for (Map.Entry<String, ClientePrivado> clientePrivado412 : clientesPrivados.entrySet()) {
+                                                                    if (clientePrivado412.getKey().equals(dni6)) {
                                                                         System.out.println("Introduce el nombre del cliente: ");
                                                                         String nombre6 = sc.nextLine();
                                                                         System.out.println("Introduce los apellidos del cliente: ");
@@ -667,6 +697,10 @@ public class main {
                                                                         String email6 = sc.nextLine();
                                                                         System.out.println("Introduce el codigo postal del cliente: ");
                                                                         int codigoPostal6 = sc.nextInt();
+
+                                                                        // Instanciamos un nuevo cliente con los datos introducidos
+                                                                        ClientePrivado clientePrivado4 = new ClientePrivado();
+
                                                                         clientePrivado4.setNombre(nombre6);
                                                                         clientePrivado4.setApellidos(apellidos6);
                                                                         clientePrivado4.setEmail(email6);
@@ -678,25 +712,29 @@ public class main {
                                                             case 3:
                                                                 System.out.println("Introduce el DNI del cliente que quieres eliminar: ");
                                                                 String dni7 = sc.nextLine();
-                                                                for (ClientePrivado clientePrivado5 : clientesPrivados) {
-                                                                    if (clientePrivado5.getDni().equals(dni7)) {
-                                                                        clientesPrivados.removeIf(clientePrivado6 -> clientePrivado6.getDni() == dni7);
-                                                                    }
-                                                                }
+                                                                // Eliminar cliente
+                                                                clientesPrivados.entrySet().removeIf(clientePrivado -> clientePrivado.getKey().equals(dni7));
+                                                                System.out.println("El cliente ha sido eliminado");
+
                                                                 break;
                                                             case 4:
                                                                 System.out.println("Introduce el DNI del cliente que quieres buscar: ");
                                                                 String dni8 = sc.nextLine();
-                                                                for (ClientePrivado clientePrivado6 : clientesPrivados) {
-                                                                    if (clientePrivado6.getDni().equals(dni8)) {
-                                                                        // Mostramos los datos del cliente
-                                                                        System.out.println("Nombre: " + clientePrivado6.getNombre());
-                                                                        System.out.println("Apellidos: " + clientePrivado6.getApellidos());
-                                                                        System.out.println("Email: " + clientePrivado6.getEmail());
-                                                                        System.out.println("Codigo Postal: " + clientePrivado6.getCodigoPostal());
-                                                                        System.out.println("DNI: " + clientePrivado6.getDni());
-                                                                        System.out.println("\n\n");
+                                                                for (Map.Entry<String, ClientePrivado> entry : clientesPrivados.entrySet()) {
+                                                                    // TODO: EXCEPCION PREDEFINIDA
+                                                                    try {
+                                                                        if (entry.getKey().equals(dni8)) {
+                                                                            // Mostramos los datos del cliente
+                                                                            System.out.println("Nombre: " + entry.getValue().getNombre());
+                                                                            System.out.println("Apellidos: " + entry.getValue().getApellidos());
+                                                                            System.out.println("Email: " + entry.getValue().getEmail());
+                                                                            System.out.println("Codigo Postal: " + entry.getValue().getCodigoPostal());
+                                                                            System.out.println("DNI: " + entry.getKey());
+                                                                        }
+                                                                    } catch (Exception e) {
+                                                                        System.out.println("El cliente no existe");
                                                                     }
+
                                                                 }
                                                                 break;
                                                             case 5:
@@ -713,7 +751,7 @@ public class main {
                                                         System.out.println("1. Añadir cliente");
                                                         System.out.println("2. Eliminar cliente");
                                                         System.out.println("3. Buscar cliente");
-                                                        System.out.println("4. Mostrar cliente");
+                                                        System.out.println("4. Modificar cliente");
                                                         System.out.println("5. Salir");
                                                         opcion6 = sc.nextInt();
                                                         sc.nextLine();
@@ -732,32 +770,32 @@ public class main {
                                                                 String escuela9 = sc.nextLine();
 
                                                                 ClienteEscolaMusica clienteEscolaMusica = new ClienteEscolaMusica(dni9, nombre9, apellidos9, email9, escuela9);
-                                                                clienteEscuelaM.add(clienteEscolaMusica);
+                                                                clienteEscuelaM.put(clienteEscolaMusica.getDni(), clienteEscolaMusica);
                                                                 break;
                                                             case 2:
                                                                 System.out.println("Introduce el DNI del cliente que quieres eliminar: ");
                                                                 String dni10 = sc.nextLine();
-                                                                for (int i = 0; i < clienteEscuelaM.size(); i++) {
-                                                                    if (clienteEscuelaM.get(i).getDni().equals(dni10)) {
-                                                                        clientesPrivados.remove(i);
-                                                                    }
-                                                                }
+                                                                clienteEscuelaM.entrySet().removeIf(entry -> entry.getKey().equals(dni10));
 
                                                                 break;
                                                             case 3:
                                                                 System.out.println("Introduce el DNI del cliente que quieres buscar: ");
                                                                 String dni11 = sc.nextLine();
-                                                                for (int i = 0; i < clienteEscuelaM.size(); i++) {
-                                                                    if (clienteEscuelaM.get(i).getDni().equals(dni11)) {
-                                                                        System.out.println(clienteEscuelaM.get(i));
+                                                                for (Map.Entry<String, ClienteEscolaMusica> entry : clienteEscuelaM.entrySet()) {
+                                                                    if (entry.getKey().equals(dni11)) {
+                                                                        System.out.println("Nombre: " + entry.getValue().getNombre());
+                                                                        System.out.println("Apellidos: " + entry.getValue().getApellidos());
+                                                                        System.out.println("DNI: " + entry.getValue().getDni());
+                                                                        System.out.println("Email: " + entry.getValue().getEmail());
+
                                                                     }
                                                                 }
                                                                 break;
                                                             case 4:
                                                                 System.out.println("Introduce el DNI del cliente que quieres modificar: ");
                                                                 String dni12 = sc.nextLine();
-                                                                for (int i = 0; i < clienteEscuelaM.size(); i++) {
-                                                                    if (clienteEscuelaM.get(i).getDni().equals(dni12)) {
+                                                                for (Map.Entry<String, ClienteEscolaMusica> clienteEscuelaMusica : clienteEscuelaM.entrySet()) {
+                                                                    if (clienteEscuelaMusica.getKey().equals(dni12)) {
                                                                         System.out.println("Introduce el nuevo DNI del cliente que quieres modificar: ");
                                                                         String dni13 = sc.nextLine();
                                                                         System.out.println("Introduce el nuevo nombre del cliente que quieres modificar: ");
@@ -769,11 +807,12 @@ public class main {
                                                                         System.out.println("Introduce el nuevo nombre de la escuela del cliente que quieres modificar: ");
                                                                         String escuela13 = sc.nextLine();
 
-                                                                        clienteEscuelaM.get(i).setDni(dni13);
-                                                                        clienteEscuelaM.get(i).setNombre(nombre13);
-                                                                        clienteEscuelaM.get(i).setApellidos(apellidos13);
-                                                                        clienteEscuelaM.get(i).setEmail(email13);
-                                                                        clienteEscuelaM.get(i).setNombreEscuela(escuela13);
+                                                                        ClienteEscolaMusica clienteEscolaMusica1 = new ClienteEscolaMusica();
+                                                                        clienteEscolaMusica1.setDni(dni13);
+                                                                        clienteEscolaMusica1.setNombre(nombre13);
+                                                                        clienteEscolaMusica1.setApellidos(apellidos13);
+                                                                        clienteEscolaMusica1.setEmail(email13);
+
                                                                     }
                                                                 }
                                                                 break;
@@ -851,8 +890,8 @@ public class main {
                                                 case 4:
                                                     System.out.println("Introduce el DNI del trabajador que quieres buscar: ");
                                                     String dniG = sc.nextLine();
-                                                    for (Trabajador trabajadorG : trabajadores){
-                                                        if (trabajadorG.getDni().equals(dniG)){
+                                                    for (Trabajador trabajadorG : trabajadores) {
+                                                        if (trabajadorG.getDni().equals(dniG)) {
                                                             System.out.println("Nombre: " + trabajadorG.getNombre());
                                                             System.out.println("Apellidos: " + trabajadorG.getApellido());
                                                             System.out.println("Email: " + trabajadorG.getEmail());
@@ -886,6 +925,7 @@ public class main {
                     System.out.println("Introduce una opción correcta");
                     break;
             }
+
         } while (opcion != 4);
     }
 

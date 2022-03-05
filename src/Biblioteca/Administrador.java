@@ -2,8 +2,8 @@ package Biblioteca;
 
 public class Administrador extends Usuario {
 
-    public String usuario = "admin";
-    public String contra = "admin";
+    public String usuario = "Biblioteca/admin";
+    public String contra = "Biblioteca/admin";
 
 
     // Constructor

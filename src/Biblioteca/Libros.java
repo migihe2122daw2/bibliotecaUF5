@@ -110,7 +110,7 @@ public class Libros<tematica> {
      * Metodo para prestar un libro
      */
 
-    public String Prestar(int isbnPrestado, ArrayList<Libros> libros, ArrayList<ClientePrivado> clientePrivados) {
+    public String Prestar(int isbnPrestado, List<Libros> libros, Map<String,ClientePrivado> clientePrivados) {
 
         String prestamo = null;
         // Prestar el libro
@@ -181,7 +181,8 @@ public class Libros<tematica> {
                 // Crear un cliente nuevo
 
                 ClientePrivado cliente = new ClientePrivado(nombre, apellido, dni);
-                clientePrivados.add(cliente);
+                clientePrivados.put(cliente.getDni(), cliente);
+
 
                 Calendar fecha = Calendar.getInstance();
                 int dia = fecha.get(Calendar.DAY_OF_MONTH);
@@ -248,7 +249,7 @@ public class Libros<tematica> {
      * @param isbnPrestado
      */
 
-    public static void devolverLibros(ArrayList<Libros> libros, int isbnPrestado) {
+    public static void devolverLibros(List<Libros> libros, int isbnPrestado) {
 
         // Buscar el libro con el isbn usando el metodo buscarLibro
 
@@ -260,7 +261,7 @@ public class Libros<tematica> {
 
     }
 
-    public void Comprar(int isbnCompra, ArrayList<Libros> libros) { // ESTO SERA UN POLIMORFISMO
+    public void Comprar(int isbnCompra, List<Libros> libros) { // ESTO SERA UN POLIMORFISMO
 
 
     }
@@ -271,7 +272,7 @@ public class Libros<tematica> {
      * @param isbn
      * @return
      */
-    public static Libros buscar(ArrayList<Libros> libros, int isbn) { // el metodo buscarLibro recibe un arraylist de libros y un isbn,
+    public static Libros buscar(List<Libros> libros, int isbn) { // el metodo buscarLibro recibe un arraylist de libros y un isbn,
         // es un polimorfismo
         for (int i = 0; i < libros.size(); i++) {
             if (libros.get(i).getIsbn() == isbn) {
@@ -290,7 +291,7 @@ public class Libros<tematica> {
      * @throws CloneNotSupportedException
      */
 
-    public static void clonar(ArrayList<Libros> libros, int isbn, int cantidad) throws CloneNotSupportedException {
+    public static void clonar(List<Libros> libros, int isbn, int cantidad) throws CloneNotSupportedException {
         // Comprobar que el libro no existe
         boolean existe = false;
         for (Libros libro : libros) {

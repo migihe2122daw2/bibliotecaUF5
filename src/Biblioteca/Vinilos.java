@@ -1,8 +1,5 @@
 package Biblioteca;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Calendar;
+import java.util.*;
 
 public class Vinilos {
     //atributos
@@ -88,7 +85,7 @@ public class Vinilos {
         System.out.println("El vinilo se ha devuelto");
     }
 
-    public String Prestar(int id, ArrayList<Vinilos> vinilos, ArrayList<ClienteEscolaMusica> clienteEscolaMusica) {
+    public String Prestar(int id, ArrayList<Vinilos> vinilos, Map<String,ClienteEscolaMusica> clienteEscolaMusica) {
 
         String prestamo = null;
         // Prestar el vinilo
@@ -154,7 +151,7 @@ public class Vinilos {
                 System.out.println("El cliente no existe");
 
                 ClienteEscolaMusica clienteEsc = new ClienteEscolaMusica(nombre, apellido, dni);
-                clienteEscolaMusica.add(clienteEsc);
+                clienteEscolaMusica.put(clienteEsc.getDni(), clienteEsc);
 
                 Calendar fecha = Calendar.getInstance();
                 int dia = fecha.get(Calendar.DAY_OF_MONTH);
