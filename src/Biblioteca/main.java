@@ -2,6 +2,7 @@ package Biblioteca;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.ToDoubleBiFunction;
 
 public class main {
 
@@ -82,7 +83,8 @@ public class main {
 
 
         // Crear trabajadores
-        ArrayList<Trabajador> trabajadores = new ArrayList<>();
+        //TODO: LinkedHashSet
+        Set<Trabajador> trabajadores = new LinkedHashSet<Trabajador>();
         Trabajador trabajadores1 = new Trabajador("1234", "Alberto", "de la Capital", "capitalalberto@gmail.com", "encarregat", "encarregat");
         Trabajador trabajadores2 = new Trabajador("1235", "Juan", "Alberto", "albertojuan@gmail.com", "encarregat", "encarregat");
         Trabajador trabajadores3 = new Trabajador("1236", "Carlos", "Fernandez", "fernandezcarlos@gmail.com", "encarregat", "encarregat");
@@ -94,8 +96,11 @@ public class main {
 
         // Crear prestamos
 
-        ArrayList<PrestadoLibro> prestamosLibros = new ArrayList<>();
-        ArrayList<PrestadoVinilo> prestamosVinilos = new ArrayList<>();
+        //TODO: TREESET
+        TreeSet<PrestadoLibro> prestamosLibros = new TreeSet<>();
+
+        //TODO: HASHSET
+        HashSet<PrestadoVinilo> prestamosVinilos = new HashSet<>();
 
 
         // Swwitch case para el menu
@@ -205,6 +210,17 @@ public class main {
                                                             sc.nextLine();
                                                             numeroEscape = 1;
                                                         }
+                                                    }
+
+                                                    // Guardar datos del prestamo en el fichero prestamos.txt
+                                                    try {
+                                                        FileWriter fw = new FileWriter("src/Biblioteca/prestamos", true);
+                                                        BufferedWriter bw = new BufferedWriter(fw);
+                                                        PrintWriter pw = new PrintWriter(bw);
+                                                        pw.println(libro.getIsbn() + " " + nombre);
+                                                        pw.close();
+                                                    }catch (IOException e) {
+                                                        System.out.println("Error al escribir en el fichero");
                                                     }
                                                 } else if (opcion21 == 2) {
                                                     System.out.println("\nIndica el isbn y el nombre del cliente que quiere devolver el libro");

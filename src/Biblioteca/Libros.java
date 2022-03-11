@@ -128,8 +128,8 @@ public class Libros<tematica> {
 
         // Buscar el cliente por el dni
 
-        for (int i = 0; i < clientePrivados.size(); i++) {
-            if (Objects.equals(clientePrivados.get(i).getDni(), dni)) {
+        for (Map.Entry<String, ClientePrivado> clientePrivado : clientePrivados.entrySet()) {
+            if (clientePrivado.getKey().equals(dni)) {
                 Calendar fecha = Calendar.getInstance();
                 int dia = fecha.get(Calendar.DAY_OF_MONTH);
                 fecha.add(Calendar.MONTH, 1);
