@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vinilos>
+    <vinilo>
+        <nombre>El mal querer</nombre>
+        <canciones>9</canciones>
+        <id>20</id>
+        <fechaLanzamiento>21/09/2018</fechaLanzamiento>
+    </vinilo>
+    <vinilo>
+        <nombre>Ten</nombre>
+        <canciones>5</canciones>
+        <id>21</id>
+        <fechaLanzamiento>10/10/2019</fechaLanzamiento>
+    </vinilo>
+    <vinilo>
+        <nombre>Kid a Mnesia</nombre>
+        <canciones>3</canciones>
+        <id>22</id>
+        <fechaLanzamiento>29/03/2021</fechaLanzamiento>
+    </vinilo>
+</vinilos>

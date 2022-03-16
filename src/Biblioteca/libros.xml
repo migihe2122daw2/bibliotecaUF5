@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<libros>
+    <libro>
+        <titulo>Por si las voces vuelven</titulo>
+        <autor>Angel Martin</autor>
+        <isbn>5050</isbn>
+        <cantidad>10</cantidad>
+        <precio>25</precio>
+    </libro>
+    <libro>
+        <titulo>Indigno de ser humano</titulo>
+        <autor>Osamu Dazai</autor>
+        <isbn>0313</isbn>
+        <cantidad>1</cantidad>
+        <precio>19</precio>
+    </libro>
+    <libro>
+        <titulo>Dime quien soy</titulo>
+        <autor>Julia Navarro</autor>
+        <isbn>0002</isbn>
+        <cantidad>5</cantidad>
+        <precio>20</precio>
+    </libro>
+</libros>
