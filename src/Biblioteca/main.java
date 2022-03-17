@@ -102,6 +102,10 @@ public class main {
         //TODO: HASHSET
         HashSet<PrestadoVinilo> prestamosVinilos = new HashSet<>();
 
+        //TODO: PARTE DE CLASE GENERICA
+        Vinilos Vinilocomentario = new Vinilos();
+        Libros Libroscomentario = new Libros();
+
 
         // Swwitch case para el menu
 
@@ -219,7 +223,7 @@ public class main {
                                                         PrintWriter pw = new PrintWriter(bw);
                                                         pw.println(libro.getIsbn() + " " + nombre);
                                                         pw.close();
-                                                    }catch (IOException e) {
+                                                    } catch (IOException e) {
                                                         System.out.println("Error al escribir en el fichero");
                                                     }
                                                 } else if (opcion21 == 2) {
@@ -572,7 +576,9 @@ public class main {
                                                     }
                                                     break;
                                                 case 4:
-                                                    System.out.println("Introduce el isbn del libro que quieres consultar: ");
+                                                    //TODO: CLASE GENERICA 2
+                                                    Libroscomentario.setLibroComentario("Introduce el isbn del libro que quieres consultar: ");
+                                                    Libroscomentario.getLibroComentario();
                                                     int isbn5 = sc.nextInt();
                                                     sc.nextLine();
                                                     for (Libros libro : libros) {
@@ -603,7 +609,9 @@ public class main {
                                             sc.nextLine();
                                             switch (opcion3) {
                                                 case 1:
-                                                    System.out.println("Introduce el nombre del vinilo: ");
+                                                    //TODO: CLASE GENERICA EN ACCIÓN
+                                                    Vinilocomentario.setComentario("Introduce el nombre del vinilo: ");
+                                                    System.out.println(Vinilocomentario.getComentario());
                                                     String nombre3 = sc.nextLine();
                                                     System.out.println("Introduce numero de canciones del vinilo: ");
                                                     int numero3 = sc.nextInt();

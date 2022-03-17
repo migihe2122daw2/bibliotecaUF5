@@ -1,8 +1,9 @@
 package Biblioteca;
 import java.util.*;
 
-public class Vinilos {
+public class Vinilos<E> {
     //atributos
+    private E comentario;
     public String nombre;
     public int canciones;
     public int id;
@@ -31,6 +32,14 @@ public class Vinilos {
         this.id = id;
         this.fechaLanzamiento = fechaLanzamiento;
         this.cantidad = cantidad;
+    }
+
+    public E getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(E comentario) {
+        this.comentario = comentario;
     }
 
     //getters y setters
