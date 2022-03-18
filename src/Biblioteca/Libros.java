@@ -3,10 +3,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.*;
 
-public class Libros<tematica> {
+public class Libros<tematica, E> {
+    private E LibroComentario;
     private static String titulo;
     protected tematica tematica;
-
     // Atributos
 
 
@@ -53,6 +53,23 @@ public class Libros<tematica> {
     }
 
     // Getters y Setters
+
+
+    public E getLibroComentario() {
+        return LibroComentario;
+    }
+
+    public void setLibroComentario(E libroComentario) {
+        LibroComentario = libroComentario;
+    }
+
+    public tematica getTematica() {
+        return tematica;
+    }
+
+    public void setTematica(tematica tematica) {
+        this.tematica = tematica;
+    }
 
     public String getTitulo() {
         return titulo;
