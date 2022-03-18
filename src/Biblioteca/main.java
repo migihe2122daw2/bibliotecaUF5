@@ -1,5 +1,22 @@
 package Biblioteca;
 
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import java.io.*;
 import java.util.*;
 import java.util.function.ToDoubleBiFunction;
@@ -219,7 +236,7 @@ public class main {
                                                         PrintWriter pw = new PrintWriter(bw);
                                                         pw.println(libro.getIsbn() + " " + nombre);
                                                         pw.close();
-                                                    }catch (IOException e) {
+                                                    } catch (IOException e) {
                                                         System.out.println("Error al escribir en el fichero");
                                                     }
                                                 } else if (opcion21 == 2) {
@@ -515,7 +532,10 @@ public class main {
                                             System.out.println("2. Eliminar libro");
                                             System.out.println("3. Modificar libro");
                                             System.out.println("4. Ver libros");
-                                            System.out.println("5. Salir");
+                                            System.out.println("5. Libros que estaran disponible proximamente");
+                                            System.out.println("6. Añadir libro a la lista de libros que estaran disponibles proximamente");
+                                            System.out.println("7. Ver libros en prestamo");
+                                            System.out.println("8. Salir");
 
                                             opcion2 = sc.nextInt();
                                             sc.nextLine();
@@ -584,12 +604,147 @@ public class main {
                                                     }
                                                     break;
                                                 case 5:
+                                                    // Mostrar libros que estaran disponible proximamente en la biblioteca utilizando el archivo libros.xml
+
+                                                    //Leer fichero xml
+
+                                                    try {
+
+                                                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                                                        DocumentBuilder builder = factory.newDocumentBuilder();
+                                                        Document document = builder.parse(new File("src/Biblioteca/libros.xml"));
+                                                        document.getDocumentElement().normalize();
+
+                                                        // Mostrar los libros
+
+                                                        NodeList nList = document.getElementsByTagName("libro");
+                                                        for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                                                            Node nNode = nList.item(temp);
+
+                                                            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                                                                Element eElement = (Element) nNode;
+
+                                                                System.out.println("\n Libro " + (temp + 1) + " : \n");
+                                                                System.out.println("Titulo: " + eElement.getElementsByTagName("titulo").item(0).getTextContent());
+                                                                System.out.println("Autor: " + eElement.getElementsByTagName("autor").item(0).getTextContent());
+                                                                System.out.println("ISBN: " + eElement.getElementsByTagName("isbn").item(0).getTextContent());
+                                                                System.out.println("Cantidad: " + eElement.getElementsByTagName("cantidad").item(0).getTextContent());
+                                                                System.out.println("Precio: " + eElement.getElementsByTagName("precio").item(0).getTextContent());
+
+                                                            }
+                                                        }
+
+                                                    } catch (Excepcion e) {
+                                                        e.printStackTrace();
+                                                    } catch (ParserConfigurationException e) {
+                                                        e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    } catch (SAXException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                    break;
+                                                case 6:
+                                                    // Añadir un libro a la lista de libros que se añadiran a la biblioteca proximamente utilizando el archivo libros.xml
+
+                                                    //Leer fichero xml
+
+
+                                                    try {
+
+                                                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                                                        DocumentBuilder builder = factory.newDocumentBuilder();
+                                                        Document document = builder.parse(new File("src/Biblioteca/libros.xml"));
+                                                        document.getDocumentElement().normalize();
+
+                                                        // Añadir libro
+
+                                                        System.out.println("\nAñadir libro\n");
+                                                        System.out.println("Titulo: ");
+                                                        String tituloV = sc.nextLine();
+                                                        System.out.println("Autor: ");
+                                                        String autorV = sc.nextLine();
+                                                        System.out.println("ISBN: ");
+                                                        String isbnV = sc.nextLine();
+                                                        System.out.println("Cantidad: ");
+                                                        int cantidadV = sc.nextInt();
+                                                        System.out.println("Precio: ");
+                                                        double precioV = sc.nextDouble();
+
+                                                        Element libro = document.createElement("libro");
+                                                        Element tituloLibro = document.createElement("titulo");
+                                                        tituloLibro.appendChild(document.createTextNode(tituloV));
+                                                        Element autorLibro = document.createElement("autor");
+                                                        autorLibro.appendChild(document.createTextNode(autorV));
+                                                        Element isbnLibro = document.createElement("isbn");
+                                                        isbnLibro.appendChild(document.createTextNode(isbnV));
+                                                        Element cantidadLibro = document.createElement("cantidad");
+                                                        cantidadLibro.appendChild(document.createTextNode(String.valueOf(cantidadV)));
+                                                        Element precioLibro = document.createElement("precio");
+                                                        precioLibro.appendChild(document.createTextNode(String.valueOf(precioV)));
+
+                                                        libro.appendChild(tituloLibro);
+                                                        libro.appendChild(autorLibro);
+                                                        libro.appendChild(isbnLibro);
+                                                        libro.appendChild(cantidadLibro);
+                                                        libro.appendChild(precioLibro);
+
+                                                        document.getElementsByTagName("libros").item(0).appendChild(libro);
+
+                                                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                                                        Transformer transformer = transformerFactory.newTransformer();
+                                                        DOMSource source = new DOMSource(document);
+                                                        StreamResult result = new StreamResult(new File("src/Biblioteca/libros.xml"));
+                                                        transformer.transform(source, result);
+                                                        System.out.println("Libro añadido");
+                                                        break;
+
+
+                                                    } catch (TransformerConfigurationException e) {
+                                                        e.printStackTrace();
+                                                    } catch (ParserConfigurationException e) {
+                                                        e.printStackTrace();
+                                                    } catch (TransformerException e) {
+                                                        e.printStackTrace();
+                                                    } catch (SAXException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                    break;
+                                                case 7:
+                                                    // Mostrar los libros que estan en prestamo del archivo prestamos.txt
+                                                    try {
+                                                        File archivo = new File("src/Biblioteca/prestamos");
+                                                        FileReader fr2 = new FileReader(archivo);
+                                                        BufferedReader br2 = new BufferedReader(fr2);
+                                                        String linea2;
+
+                                                        System.out.println("Libros en prestamo\n");
+
+                                                        while ((linea2 = br2.readLine()) != null) {
+                                                            // Separar los datos del archivo por un espacio
+                                                            String[] datos = linea2.split(" ");
+                                                            System.out.println("ISBN: " + datos[0] + " " + "Nombre: " + datos[1]);
+                                                        }
+
+                                                        br2.close();
+                                                        fr2.close();
+
+                                                        System.out.println("Pulse enter para continuar");
+                                                        sc.nextLine();
+                                                        break;
+                                                    }catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
                                                     break;
                                                 default:
                                                     System.out.println("Opcion incorrecta");
                                                     break;
                                             }
-                                        } while (opcion2 != 5);
+                                        } while (opcion2 != 8);
                                         break;
                                     case 2:
                                         int opcion3;
@@ -598,7 +753,9 @@ public class main {
                                             System.out.println("2. Modificar un vinilo");
                                             System.out.println("3. Consultar un vinilo");
                                             System.out.println("4. Eliminar un vinilo");
-                                            System.out.println("5. Salir");
+                                            System.out.println("5. Vinilos que estarán disponibles proximamente");
+                                            System.out.println("6. Añadir vinilos que estará disponible proximamente");
+                                            System.out.println("7. Salir");
                                             opcion3 = sc.nextInt();
                                             sc.nextLine();
                                             switch (opcion3) {
@@ -656,12 +813,111 @@ public class main {
                                                     vinilos.removeIf(vinilo5 -> vinilo5.getId() == id6);
                                                     break;
                                                 case 5:
+                                                    //Leer fichero xml
+
+                                                    try {
+
+                                                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                                                        DocumentBuilder builder = factory.newDocumentBuilder();
+                                                        Document document = builder.parse(new File("src/Biblioteca/vinilo.xml"));
+                                                        document.getDocumentElement().normalize();
+
+                                                        // Mostrar los libros
+
+                                                        NodeList nList = document.getElementsByTagName("vinilo");
+                                                        for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                                                            Node nNode = nList.item(temp);
+
+                                                            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                                                                Element eElement = (Element) nNode;
+
+                                                                System.out.println("\n Vinilo " + (temp + 1) + " : \n");
+                                                                System.out.println("Nombre: " + eElement.getElementsByTagName("nombre").item(0).getTextContent());
+                                                                System.out.println("Canciones: " + eElement.getElementsByTagName("canciones").item(0).getTextContent());
+                                                                System.out.println("ID: " + eElement.getElementsByTagName("id").item(0).getTextContent());
+                                                                System.out.println("Fecha Lanzamiento: " + eElement.getElementsByTagName("fechaLanzamiento").item(0).getTextContent());
+                                                            }
+                                                        }
+
+                                                    } catch (Excepcion e) {
+                                                        e.printStackTrace();
+                                                    } catch (ParserConfigurationException e) {
+                                                        e.printStackTrace();
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    } catch (SAXException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+
+                                                    break;
+
+                                                case 6:
+                                                    try {
+
+                                                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                                                        DocumentBuilder builder = factory.newDocumentBuilder();
+                                                        Document document = builder.parse(new File("src/Biblioteca/vinilo.xml"));
+                                                        document.getDocumentElement().normalize();
+
+                                                        // Añadir libro
+
+                                                        System.out.println("\nAñadir viniloo\n");
+                                                        System.out.println("Nombre: ");
+                                                        String nombre = sc.nextLine();
+                                                        System.out.println("Canciones: ");
+                                                        String canciones = sc.nextLine();
+                                                        System.out.println("ID: ");
+                                                        int id = sc.nextInt();
+                                                        System.out.println("Fecha Lanzamiento: ");
+                                                        String fecha = sc.nextLine();
+
+                                                        Element vinilo2 = document.createElement("vinilo");
+                                                        Element nombrevinilo = document.createElement("nombre");
+                                                        nombrevinilo.appendChild(document.createTextNode(nombre));
+                                                        Element cancionesVinilo = document.createElement("canciones");
+                                                        cancionesVinilo.appendChild(document.createTextNode(canciones));
+                                                        Element idVinilo = document.createElement("id");
+                                                        idVinilo.appendChild(document.createTextNode(String.valueOf(id)));
+                                                        Element fechaVinilo = document.createElement("fecha");
+                                                        fechaVinilo.appendChild(document.createTextNode(fecha));
+
+                                                        vinilo2.appendChild(nombrevinilo);
+                                                        vinilo2.appendChild(cancionesVinilo);
+                                                        vinilo2.appendChild(idVinilo);
+                                                        vinilo2.appendChild(fechaVinilo);
+
+                                                        document.getElementsByTagName("vinilos").item(0).appendChild(vinilo2);
+
+                                                        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                                                        Transformer transformer = transformerFactory.newTransformer();
+                                                        DOMSource source = new DOMSource(document);
+                                                        StreamResult result = new StreamResult(new File("src/Biblioteca/vinilo.xml"));
+                                                        transformer.transform(source, result);
+                                                        System.out.println("Vinilo añadido");
+                                                        break;
+
+
+                                                    } catch (TransformerConfigurationException e) {
+                                                        e.printStackTrace();
+                                                    } catch (ParserConfigurationException e) {
+                                                        e.printStackTrace();
+                                                    } catch (TransformerException e) {
+                                                        e.printStackTrace();
+                                                    } catch (SAXException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                    break;
+                                                case 7:
                                                     break;
                                                 default:
                                                     System.out.println("Opcion incorrecta");
                                                     break;
                                             }
-                                        } while (opcion3 != 5);
+                                        } while (opcion3 != 7);
                                         break;
                                     case 3:
                                         int opcion4;
